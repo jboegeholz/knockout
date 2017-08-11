@@ -1,0 +1,20 @@
+{
+  "name": "yarn_test",
+  "version": "1.0.0",
+  "description": "see how it works",
+  "main": "index.js",
+  "author": "jboegeholz",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "jshint-html-reporter": "^0.2.5",
+    "knockout": "^3.4.2"
+  },
+  "scripts": {
+    "copy": "grunt copy",
+    "lint": "grunt lint",
+    "lint-local": "grunt lint-local"
+  }
+}
