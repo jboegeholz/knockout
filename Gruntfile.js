@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                     jQuery: true
                 }
             },
-            src_files: ['Gruntfile.js', 'app/static/js/*.js'],
+            src_files: ['Gruntfile.js', '/static/js/*.js'],
             local: {
                 options: {
                     reporter: require('jshint-html-reporter'),
