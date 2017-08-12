@@ -27,7 +27,11 @@ module.exports = function (grunt) {
             main: {
                 files: [{
                     src: './node_modules/knockout/build/output/knockout-latest.js',
-                    dest: './static/js/knockout.js',
+                    dest: './static/vendors/knockout.js',
+                    filter: 'isFile'
+                }, {
+                    src: './node_modules/jquery/dist/jquery.js',
+                    dest: './static/vendors/jquery.js',
                     filter: 'isFile'
                 }],
             },

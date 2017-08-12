@@ -1,5 +1,5 @@
 function FindingViewModel() {
-    var self = this;
+    let self = this;
 
     self.findings = ko.observableArray();
 
