@@ -33,6 +33,10 @@ module.exports = function (grunt) {
                     src: './node_modules/jquery/dist/jquery.js',
                     dest: './static/vendors/jquery.js',
                     filter: 'isFile'
+                }, {
+                    src: './node_modules/bootstrap/dist/css/bootstrap.css',
+                    dest: './static/vendors/bootstrap.css',
+                    filter: 'isFile'
                 }],
             },
         },

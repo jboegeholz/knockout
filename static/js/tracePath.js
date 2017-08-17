@@ -1,5 +1,5 @@
 class TracePathViewModel {
-    constructor(){
+    constructor() {
         this.car = ko.observable();
         this.driver = ko.observable();
         this.start_date = ko.observable();
@@ -11,29 +11,56 @@ class TracePathViewModel {
     }
 
 }
+
 ko.components.register('drive-details', {
     template:
-        `<div>
-            <select data-bind="value: car">
+        `<div class="row">
+            <div class="col">
+            <div class="input-group">
+            <span class="input-group-addon">Car</span>
+            <select class="form-control" data-bind="value: car">
                 <option>Fahrer A</option>
                 <option>Fahrer B</option>
                 <option>Fahrer C</option>
-            </select><br/>
-            <select data-bind="value: driver">
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+            <div class="input-group">
+            <span class="input-group-addon">Driver</span>
+            <select class="form-control" data-bind="value: driver">
                 <option>Auto A</option>
                 <option>Auto B</option>
                 <option>Auto C</option>
-            </select><br/>
-            <input data-bind="value: start_date"/><br/>
-            <input data-bind="value: end_date"/><br/>
-            <span data-bind="text: trace_path_proposal"></span>\
+            </select></div></div></div>
+                        <div class="row">
+            <div class="col">
+            <div class="input-group">
+            <span class="input-group-addon">Start Date</span>
+            <input class="form-control" data-bind="value: start_date"/>
+            </div></div></div>
+            <div class="row">
+            <div class="col">
+            <div class="input-group">
+            <span class="input-group-addon">End Date</span>
+            <input class="form-control" data-bind="value: end_date"/>       
+            </div></div></div>                 
+            <div class="row">
+            <div class="col">
+            <div class="input-group">
+            <span class="input-group-addon">Trace Path Proposal</span>
+            <input class="form-control" data-bind="value: trace_path_proposal" />
+            </div>
+        </div>
         </div>`,
 
     viewModel: {
-    createViewModel() {
-      return new TracePathViewModel();
+        createViewModel() {
+            return new TracePathViewModel();
+        },
     },
-  },
 
 });
 //ko.applyBindings();

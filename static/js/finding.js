@@ -36,7 +36,15 @@ function FindingViewModel() {
 }
 
 ko.components.register('finding', {
-    template: `<table>
+    template: `<table class="table table-striped">
+            <thead class="thead-default">
+             <tr>
+                  <th>#</th>
+                  <th>Trigger</th>
+                  <th>Action</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
             <tbody data-bind="foreach: findings">
             <tr>
             <td><span data-bind="text: id"/></td>
