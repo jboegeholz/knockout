@@ -48,10 +48,10 @@ ko.components.register('finding', {
             <tbody data-bind="foreach: findings">
             <tr>
             <td><span data-bind="text: id"/></td>
-            <td><input data-bind="value: trigger"/></td>
-            <td><input /></td>
-            <td><input /></td>
-            <td><a href="#" data-bind="click: $parent.removeFinding">Remove</a></td>
+            <td><textarea data-bind="value: trigger"/></td>
+            <td><textarea /></td>
+            <td><textarea /></td>
+            <td  data-bind="click: $parent.removeFinding"><i class="glyphicon glyphicon-trash"></i></td>
             </tr></tbody></table>
             <button data-bind="click: addFinding">Add a Finding</button>`,
 
