@@ -53,7 +53,12 @@ ko.components.register('finding', {
             <td><textarea /></td>
             <td  data-bind="click: $parent.removeFinding"><i class="glyphicon glyphicon-trash"></i></td>
             </tr></tbody></table>
-            <button data-bind="click: addFinding">Add a Finding</button>`,
+            <div class="navbar navbar-inverse">
+            <div class="navbar-inner">
+            <button class="navbar-btn pull-right" data-bind="click: addFinding">Add a Finding</button>
+            </div>
+            </div>
+            `,
 
     viewModel: FindingViewModel
 
