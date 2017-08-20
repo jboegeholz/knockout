@@ -17,5 +17,11 @@ def get_findings():
     return jsonify(findings=findings)
 
 
+@app.route('/_get_available_cars')
+def get_available_cars():
+    cars = ["Car_A", "Car_B", "Car_C"]
+
+    return jsonify(cars=cars)
+
 if __name__ == '__main__':
     app.run()

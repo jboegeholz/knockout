@@ -1,7 +1,8 @@
 class TracePathViewModel {
     constructor() {
+        var self = this;
         this.car = ko.observable();
-        this.availableCars = ko.observableArray(["Car_A", "Car_B", "Car_C"]);
+        this.availableCars = ko.observableArray();
         this.driver = ko.observable();
         this.availableDriver = ko.observableArray(["Driver_A", "Driver_B"]);
         this.start_date = ko.observable("01.01.2017");
@@ -10,7 +11,20 @@ class TracePathViewModel {
         this.trace_path_proposal = ko.pureComputed(function () {
             return this.car() + "_" + this.driver() + "_" + this.start_date() + "_" + this.end_date();
         }, this);
+
+        $.getJSON("/_get_available_cars", function (data) {
+            self.update(data);
+        });
     }
+
+    update(data) {
+        let cars = data.cars;
+        for (let index = 0; index < cars.length; ++index) {
+            let car = cars[index];
+            this.availableCars.push(car);
+        }
+
+    };
 
 }
 
