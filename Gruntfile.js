@@ -1,6 +1,13 @@
 module.exports = function (grunt) {
 
     grunt.initConfig({
+        connect: {
+            server: {
+                options: {
+                    keepalive: true
+                },
+            }
+        },
         jshint: {
             options: {
                 globals: {
@@ -45,6 +52,7 @@ module.exports = function (grunt) {
     ;
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.registerTask('lint', ['jshint:jenkins']);
     grunt.registerTask('lint-local', ['jshint:local']);
 };
