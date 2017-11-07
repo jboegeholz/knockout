@@ -27,7 +27,7 @@ class TracePathViewModel {
     };
 
 }
-
+//https://stackoverflow.com/questions/13629910/jquery-ui-datepicker-with-knockout-js
 ko.components.register('drive-details', {
     template:
         `<div class="row">

@@ -11,16 +11,36 @@ function DeviceViewModel() {
 
     self.installed_devices = ko.observableArray();
 
+    self.available_devices = ko.observableArray();
+
+    self.selected_available_device = ko.observable();
+
     self.editMode = ko.observable(false);
 
+    self.editOrSave = ko.observable("Edit Devices");
 
     self.addDevice = function () {
-        self.installed_devices.push(new Device(self.findings().length + 1, ""));
+        alert(self.selected_available_device());
+        self.installed_devices.push(self.available_devices()[self.selected_available_device()]);
+        //self.available_devices.remove(self.available_devices()[self.selected_available_device() - 1])
     };
 
+    self.find = function(id)
+    {
+        let found = ko.utils.arrayFirst(self.installed_devices(), function(device) {
+            return device.id === id;
+        });
+        return found;
+    };
 
     self.editDevices = function () {
-        self.editMode(true);
+        if (self.editMode() === false) {
+            self.editMode(true);
+            self.editOrSave("Save Devices");
+        } else {
+            self.editMode(false);
+            self.editOrSave("Edit Devices");
+        }
     };
 
 
@@ -38,43 +58,70 @@ function DeviceViewModel() {
 
     };
 
+    self.update_available_devices = function (data) {
+        let available_devices = data.available_devices;
+        for (let index = 0; index < available_devices.length; ++index) {
+            let device = available_devices[index];
+            self.available_devices.push(new Device(device.id, device.name, device.functional, device.info));
+        }
+
+    };
+
     $.getJSON("/_get_installed_devices", function (data) {
         self.update(data);
+    });
+
+    $.getJSON("/_get_available_devices", function (data) {
+        self.update_available_devices(data);
     });
 }
 
 ko.components.register('installed_devices', {
-    template: `<div data-bind="visible: editMode">
-    You will see this message only when "shouldShowMessage" holds a true value.
+    template: `<table class="table table-striped">
+    <thead class="thead-default">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Functional</th>
+        <th>Info</th>
+        <th data-bind="visible: editMode()">Remove</th>
+    </tr>
+    </thead>
+    <tbody data-bind="foreach: installed_devices">
+    <tr>
+        <td><span data-bind="text: id"/></td>
+        <td><span data-bind="text: name"/></td>
+        <td><label>Yes
+            <input type="radio" name="functional" value="true" data-bind="checked: functional"/>
+        </label>
+            <label>No
+                <input type="radio" name="functional" value="false" data-bind="checked: !functional"/>
+            </label></td>
+        <td>
+            <input type="text" data-bind="value:info, visible: $parent.editMode()"/>
+            <span data-bind="text:info, visible: !$parent.editMode()">
+        </td>
+        <td data-bind="visible: $parent.editMode, click: $parent.removeDevice"><i class="glyphicon glyphicon-trash"></i>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="navbar navbar-inverse">
+
+    <select data-bind=" 
+        value: selected_available_device,
+        options:        available_devices,
+        optionsText:    'name', 
+        optionsValue:   'id',   
+        optionsCaption: '-- Select Device --'
+    ">
+
+    </select>
+    <button data-bind="click: addDevice">Add</button>
+    <div class="navbar-inner">
+        <button class="navbar-btn pull-right" data-bind="text: editOrSave, click: editDevices"></button>
+    </div>
 </div>
-<table class="table table-striped">
-            <thead class="thead-default">
-             <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Functional</th>
-                  <th>Info</th>
-                  <th data-bind="visible: editMode">Remove</th>
-                </tr>
-              </thead>
-            <tbody data-bind="foreach: installed_devices">
-            <tr>
-            <td><span data-bind="text: id"/></td>
-            <td><span data-bind="text: name"/></td>
-            <td><label>Yes
-   <input type="radio" name="functional" value="true" data-bind="checked:functional"/>
-</label> 
-<label>No
-   <input type="radio" name="functional" value="false" data-bind="checked:functional"/>
-</label></td>
-            <td><span data-bind="text: info"/></td>
-            <td  data-bind="visible: editMode, click: $parent.removeFinding"><i  data-bind="visible: editMode" class="glyphicon glyphicon-trash"></i></td>
-            </tr></tbody></table>
-            <div class="navbar navbar-inverse">
-            <div class="navbar-inner">
-            <button class="navbar-btn pull-right" data-bind="click: editDevices">Edit</button>
-            </div>
-            </div>
             `,
 
     viewModel: DeviceViewModel

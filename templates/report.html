@@ -6,12 +6,20 @@
     <link rel="stylesheet" href="/static/vendors/bootstrap.css">
     <script type='text/javascript' src="/static/vendors/knockout.js"></script>
     <script type='text/javascript' src="/static/vendors/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
 </head>
 <body>
 <div class="container">
-<drive-details></drive-details>
-<hr>
-<finding></finding>
+    <input class="form-control" id="datepicker"/>
+    <drive-details></drive-details>
+    <hr>
+    <finding></finding>
 </div>
 </body>
 <script src="/static/js/tracePath.js"></script>
