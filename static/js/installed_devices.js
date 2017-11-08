@@ -19,18 +19,17 @@ function DeviceViewModel() {
 
     self.editOrSave = ko.observable("Edit Devices");
 
-    self.addDevice = function () {
-        alert(self.selected_available_device());
-        self.installed_devices.push(self.available_devices()[self.selected_available_device()]);
-        //self.available_devices.remove(self.available_devices()[self.selected_available_device() - 1])
-    };
 
-    self.find = function(id)
-    {
-        let found = ko.utils.arrayFirst(self.installed_devices(), function(device) {
-            return device.id === id;
-        });
-        return found;
+    self.save_installed_devices = function(){
+        let jsonData = ko.toJSON(self.installed_devices);
+        $.ajax({
+            method: "POST",
+            url: "/_save_installed_devices",
+            data: jsonData
+        })
+            .done(function (msg) {
+                alert("Data Saved: " + msg.success);
+            });
     };
 
     self.editDevices = function () {
@@ -38,15 +37,26 @@ function DeviceViewModel() {
             self.editMode(true);
             self.editOrSave("Save Devices");
         } else {
+            self.save_installed_devices();
             self.editMode(false);
             self.editOrSave("Edit Devices");
         }
     };
 
+    self.addDevice = function () {
+        self.selected_available_device();
+        ko.utils.arrayForEach(self.available_devices(), function (device) {
+            if (device.id === self.selected_available_device()) {
+                self.installed_devices.push(device);
+                self.available_devices.remove(device);
+            }
+        });
+    };
+
 
     self.removeDevice = function (device) {
         self.installed_devices.remove(device);
-
+        self.available_devices.push(new Device(device.id, device.name, device.functional, device.info));
     };
 
     self.update = function (data) {
@@ -67,12 +77,24 @@ function DeviceViewModel() {
 
     };
 
+    self.remove_installed_devices_from_available = function () {
+        ko.utils.arrayForEach(self.installed_devices(), function (device) {
+            ko.utils.arrayForEach(self.available_devices(), function (available_device) {
+                if (device.id === available_device.id) {
+                    self.available_devices.remove(available_device);
+                }
+            });
+
+        });
+    };
+
     $.getJSON("/_get_installed_devices", function (data) {
         self.update(data);
     });
 
     $.getJSON("/_get_available_devices", function (data) {
         self.update_available_devices(data);
+        self.remove_installed_devices_from_available();
     });
 }
 
@@ -92,10 +114,10 @@ ko.components.register('installed_devices', {
         <td><span data-bind="text: id"/></td>
         <td><span data-bind="text: name"/></td>
         <td><label>Yes
-            <input type="radio" name="functional" value="true" data-bind="checked: functional"/>
+            <input type="radio" name="functional_" value="1" data-bind="checked: functional"/>
         </label>
             <label>No
-                <input type="radio" name="functional" value="false" data-bind="checked: !functional"/>
+                <input type="radio" name="functional_" value="0" data-bind="checked: functional"/>
             </label></td>
         <td>
             <input type="text" data-bind="value:info, visible: $parent.editMode()"/>
@@ -112,12 +134,12 @@ ko.components.register('installed_devices', {
         value: selected_available_device,
         options:        available_devices,
         optionsText:    'name', 
-        optionsValue:   'id',   
-        optionsCaption: '-- Select Device --'
+        optionsValue:   'id',
+        visible: editMode  
     ">
 
     </select>
-    <button data-bind="click: addDevice">Add</button>
+    <button data-bind="visible: editMode, click: addDevice">Add</button>
     <div class="navbar-inner">
         <button class="navbar-btn pull-right" data-bind="text: editOrSave, click: editDevices"></button>
     </div>
