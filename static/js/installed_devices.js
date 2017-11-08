@@ -3,7 +3,7 @@ function Device(id, name, functional, info) {
     self.id = id;
     self.name = name;
     self.functional = functional;
-    self.info = info;
+    self.info = ko.observable(info);
 }
 
 function DeviceViewModel() {
@@ -56,7 +56,7 @@ function DeviceViewModel() {
 
     self.removeDevice = function (device) {
         self.installed_devices.remove(device);
-        self.available_devices.push(new Device(device.id, device.name, device.functional, device.info));
+        self.available_devices.push(new Device(device.id, device.name, "", ""));
     };
 
     self.update = function (data) {
@@ -114,10 +114,10 @@ ko.components.register('installed_devices', {
         <td><span data-bind="text: id"/></td>
         <td><span data-bind="text: name"/></td>
         <td><label>Yes
-            <input type="radio" name="functional_" value="1" data-bind="checked: functional"/>
+            <input type="radio" value="1" data-bind="attr: {name: 'functional_' + id}, checked: functional"/>
         </label>
             <label>No
-                <input type="radio" name="functional_" value="0" data-bind="checked: functional"/>
+                <input type="radio" value="0" data-bind="attr: {name: 'functional_' + id}, checked: functional"/>
             </label></td>
         <td>
             <input type="text" data-bind="value:info, visible: $parent.editMode()"/>
