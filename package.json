@@ -14,7 +14,8 @@
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "jshint-html-reporter": "^0.2.5",
-    "knockout": "^3.4.2"
+    "knockout": "^3.4.2",
+    "knockout-postbox": "^0.6.0"
   },
   "scripts": {
     "copy": "grunt copy",
